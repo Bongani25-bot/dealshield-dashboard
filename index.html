@@ -5,99 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DealShield Dashboard</title>
   <style>
-    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f7; }
-    header { background:#2c3e50; color:white; padding:15px; text-align:center; }
-    nav { display:flex; justify-content:space-around; background:#34495e; padding:10px 0; }
-    nav a { color:white; text-decoration:none; font-weight:bold; }
-    .container { padding:15px; }
-    .card { background:white; padding:15px; margin:10px 0; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-    button { background:#27ae60; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; }
-    button:hover { background:#2ecc71; }
-    .crypto-list { display:flex; flex-direction:column; }
-    .crypto-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
-    footer { text-align:center; padding:10px; color:#888; font-size:12px; }
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5; color: #333; }
+    h1, h2, h3 { color: #1a73e8; }
+    #crypto-prices, #subscribe { background: #fff; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin: 5px 0; }
+    input { padding: 8px; width: calc(100% - 16px); margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #1558b0; }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>DealShield</h1>
-  <p>Track crypto, manage alerts, stay ahead</p>
-</header>
+  <h1>DealShield Dashboard</h1>
+  <p>Monitor crypto prices and get Telegram alerts automatically!</p>
 
-<nav>
-  <a href="#home">Home</a>
-  <a href="#dashboard">Dashboard</a>
-  <a href="#profile">Profile</a>
-</nav>
-
-<div class="container" id="home">
-  <div class="card">
-    <h2>Welcome to DealShield</h2>
-    <p>Your personal crypto tracker and Telegram alert dashboard.</p>
-    <button onclick="alert('Subscribe button clicked!')">Subscribe Now</button>
-  </div>
-</div>
-
-<div class="container" id="dashboard">
-  <div class="card">
-    <h2>Crypto Prices</h2>
-    <div class="crypto-list" id="cryptoList">
-      <!-- Crypto prices will populate here -->
-    </div>
-    <button onclick="fetchCrypto()">Refresh Prices</button>
-  </div>
-
-  <div class="card">
-    <h2>Alerts</h2>
-    <ul id="alertsList">
-      <li>No alerts yet.</li>
+  <!-- Live Crypto Prices -->
+  <div id="crypto-prices">
+    <h2>Live Crypto Prices</h2>
+    <ul id="prices-list">
+      <!-- Prices will appear here -->
     </ul>
   </div>
-</div>
 
-<div class="container" id="profile">
-  <div class="card">
-    <h2>Profile</h2>
-    <p>Name: <span id="userName">Guest</span></p>
-    <p>Telegram ID: <span id="telegramId">-</span></p>
-    <p>Subscription: <span id="subscriptionStatus">Free</span></p>
-    <button onclick="alert('Update Telegram clicked')">Update Telegram ID</button>
+  <!-- Subscribe to Telegram Alerts -->
+  <div id="subscribe">
+    <h3>Get Alerts on Telegram</h3>
+    <input type="text" id="chatId" placeholder="Enter your Telegram Chat ID">
+    <button onclick="sendTelegramAlert()">Subscribe</button>
   </div>
-</div>
 
-<footer>
-  &copy; 2026 DealShield | Mobile-friendly dashboard
-</footer>
+  <script>
+    const cryptoList = ["bitcoin","ethereum","solana","dogecoin"];
 
-<script>
-  // Fetch crypto prices from CoinGecko
-  async function fetchCrypto() {
-    const cryptoList = document.getElementById('cryptoList');
-    cryptoList.innerHTML = '<p>Loading...</p>';
-    try {
-      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,dogecoin&vs_currencies=usd');
-      const data = await res.json();
-      cryptoList.innerHTML = '';
-      for (let coin in data) {
-        const div = document.createElement('div');
-        div.className = 'crypto-item';
-        div.innerHTML = `<strong>${coin.toUpperCase()}</strong> <span>$${data[coin].usd}</span>`;
-        cryptoList.appendChild(div);
+    // Fetch live crypto prices
+    async function fetchCryptoPrices() {
+      try {
+        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoList.join(",")}&vs_currencies=usd`;
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const ul = document.getElementById("prices-list");
+        ul.innerHTML = "";
+        for (let coin of cryptoList) {
+          const li = document.createElement("li");
+          li.textContent = `${coin.toUpperCase()}: $${data[coin].usd}`;
+          ul.appendChild(li);
+
+          // Example signal: Bitcoin > $50,000 triggers Telegram
+          if (coin === "bitcoin" && data[coin].usd > 50000) {
+            sendTelegramMessage(`🚨 Bitcoin is above $50,000: $${data[coin].usd}`);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching crypto prices:", err);
       }
-    } catch(e) {
-      cryptoList.innerHTML = '<p>Error fetching prices</p>';
     }
-  }
 
-  // Simulate alerts
-  const alerts = ['Bitcoin price above $30,000!', 'Ethereum network update alert!'];
-  const alertsList = document.getElementById('alertsList');
-  alertsList.innerHTML = alerts.map(a => `<li>${a}</li>`).join('');
+    // Send message via Telegram Bot API
+    function sendTelegramMessage(msg) {
+      const botToken = "YOUR_BOT_TOKEN"; // <-- Replace with your Telegram bot token
+      const chatId = document.getElementById("chatId").value;
+      if (!chatId) return;
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ chat_id: chatId, text: msg })
+      }).catch(err => console.error("Telegram error:", err));
+    }
 
-  // Initial fetch
-  fetchCrypto();
-</script>
+    // Subscribe button action
+    function sendTelegramAlert() {
+      const chatId = document.getElementById("chatId").value;
+      if (!chatId) {
+        alert("Enter your Telegram Chat ID!");
+        return;
+      }
+      sendTelegramMessage("✅ You are now subscribed to DealShield alerts!");
+      alert("Subscription successful! You will now receive Telegram alerts.");
+    }
+
+    // Auto-refresh every 30 seconds
+    setInterval(fetchCryptoPrices, 30000);
+    fetchCryptoPrices();
+  </script>
 
 </body>
-  </html>
+</html>
