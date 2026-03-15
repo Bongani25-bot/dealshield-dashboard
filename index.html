@@ -3,91 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DealShield Dashboard</title>
+  <title>DealShield Pro Dashboard</title>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- PayPal SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5; color: #333; }
-    h1, h2, h3 { color: #1a73e8; }
-    #crypto-prices, #subscribe { background: #fff; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    ul { list-style-type: none; padding-left: 0; }
-    li { margin: 5px 0; }
-    input { padding: 8px; width: calc(100% - 16px); margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; }
-    button { padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f0f2f5; color: #333; }
+    header { padding: 20px; text-align: center; background: #1a73e8; color: white; }
+    header img { height:50px; vertical-align: middle; margin-right:10px; }
+    header h1 { display:inline; margin:0; }
+    header p { margin: 5px 0 0 0; }
+    .container { padding: 20px; max-width: 1200px; margin: auto; }
+    .coin-cards { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+    .card { background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 15px; flex: 1 1 200px; max-width: 250px; transition: transform 0.3s; }
+    .card:hover { transform: translateY(-5px); }
+    .coin-logo { width: 30px; vertical-align: middle; margin-right: 8px; }
+    .price { font-size: 1.2em; margin: 5px 0; }
+    .change { font-weight: bold; }
+    .green { color: #28a745; }
+    .red { color: #dc3545; }
+    #subscribe { margin: 30px 0; text-align: center; }
+    input { padding: 8px; width: 200px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 10px 15px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; }
     button:hover { background: #1558b0; }
+    #charts { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 30px; }
+    canvas { background: white; border-radius: 10px; padding: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    #toggle-theme { position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #ccc; border-radius: 20px; padding: 5px 10px; cursor: pointer; }
+    .top-movers { margin-top: 20px; text-align: center; font-weight: bold; }
+    #premium-subscription { text-align:center; margin:30px 0; }
+    #premium-subscription h2 { margin-bottom: 5px; }
   </style>
 </head>
 <body>
 
-  <h1>DealShield Dashboard</h1>
-  <p>Monitor crypto prices and get Telegram alerts automatically!</p>
+<header>
+  <img src="YOUR_LOGO_URL_HERE" alt="DealShield Logo">
+  <h1>DealShield Pro</h1>
+  <p>Live Crypto Prices & Telegram Alerts</p>
+</header>
 
-  <!-- Live Crypto Prices -->
-  <div id="crypto-prices">
-    <h2>Live Crypto Prices</h2>
-    <ul id="prices-list">
-      <!-- Prices will appear here -->
-    </ul>
-  </div>
+<div id="toggle-theme" onclick="toggleTheme()">Dark Mode</div>
 
-  <!-- Subscribe to Telegram Alerts -->
+<div class="container">
+
+  <!-- Telegram Subscription -->
   <div id="subscribe">
-    <h3>Get Alerts on Telegram</h3>
-    <input type="text" id="chatId" placeholder="Enter your Telegram Chat ID">
+    <input type="text" id="chatId" placeholder="Enter Telegram Chat ID">
     <button onclick="sendTelegramAlert()">Subscribe</button>
   </div>
 
-  <script>
-    const cryptoList = ["bitcoin","ethereum","solana","dogecoin"];
+  <!-- Coin Cards -->
+  <div class="coin-cards" id="coin-cards"></div>
 
-    // Fetch live crypto prices
-    async function fetchCryptoPrices() {
-      try {
-        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoList.join(",")}&vs_currencies=usd`;
-        const resp = await fetch(url);
-        const data = await resp.json();
-        const ul = document.getElementById("prices-list");
-        ul.innerHTML = "";
-        for (let coin of cryptoList) {
-          const li = document.createElement("li");
-          li.textContent = `${coin.toUpperCase()}: $${data[coin].usd}`;
-          ul.appendChild(li);
+  <!-- Charts Section -->
+  <div id="charts"></div>
 
-          // Example signal: Bitcoin > $50,000 triggers Telegram
-          if (coin === "bitcoin" && data[coin].usd > 50000) {
-            sendTelegramMessage(`🚨 Bitcoin is above $50,000: $${data[coin].usd}`);
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching crypto prices:", err);
+  <!-- Top Movers Section -->
+  <div class="top-movers" id="top-movers">Top mover: --</div>
+
+  <!-- Premium Subscription -->
+  <div id="premium-subscription">
+    <h2>Unlock Premium Alerts</h2>
+    <p>Get advanced signals and instant Telegram alerts.</p>
+    <div id="paypal-button-container"></div>
+  </div>
+</div>
+
+<script>
+const cryptoList = ["bitcoin","ethereum","solana","dogecoin"];
+const coinNames = {bitcoin: "Bitcoin", ethereum: "Ethereum", solana: "Solana", dogecoin: "Dogecoin"};
+const coinLogos = {
+  bitcoin: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
+  ethereum: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
+  solana: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+  dogecoin: "https://assets.coingecko.com/coins/images/5/large/dogecoin.png"
+};
+
+let charts = {};
+let lastPrices = {};
+
+async function fetchCryptoData() {
+  try {
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${cryptoList.join(",")}&order=market_cap_desc&per_page=10&page=1&sparkline=true`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    // Populate coin cards
+    const cardsContainer = document.getElementById("coin-cards");
+    cardsContainer.innerHTML = "";
+    let topMover = {coin: "", change: 0};
+    data.forEach(coin => {
+      if (Math.abs(coin.price_change_percentage_24h) > Math.abs(topMover.change)) {
+        topMover.coin = coin.id;
+        topMover.change = coin.price_change_percentage_24h;
       }
-    }
 
-    // Send message via Telegram Bot API
-    function sendTelegramMessage(msg) {
-      const botToken = "YOUR_BOT_TOKEN"; // <-- Replace with your Telegram bot token
-      const chatId = document.getElementById("chatId").value;
-      if (!chatId) return;
-      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ chat_id: chatId, text: msg })
-      }).catch(err => console.error("Telegram error:", err));
-    }
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3><img class="coin-logo" src="${coinLogos[coin.id]}" /> ${coinNames[coin.id]}</h3>
+        <div class="price">$${coin.current_price.toLocaleString()}</div>
+        <div class="change ${coin.price_change_percentage_24h >=0 ? "green" : "red"}">
+          ${coin.price_change_percentage_24h.toFixed(2)}%
+        </div>
+      `;
+      cardsContainer.appendChild(card);
 
-    // Subscribe button action
-    function sendTelegramAlert() {
-      const chatId = document.getElementById("chatId").value;
-      if (!chatId) {
-        alert("Enter your Telegram Chat ID!");
-        return;
+      // Charts
+      if (!charts[coin.id]) {
+        const canvas = document.createElement("canvas");
+        canvas.id = `${coin.id}-chart`;
+        canvas.width = 300;
+        canvas.height = 150;
+        document.getElementById("charts").appendChild(canvas);
+        charts[coin.id] = new Chart(canvas.getContext('2d'), {
+          type: 'line',
+          data: { labels: Array(coin.sparkline_in_7d.price.length).fill(""), datasets: [{ label: coinNames[coin.id], data: coin.sparkline_in_7d.price, borderColor: '#1a73e8', fill: false }] },
+          options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: true } } }
+        });
+      } else {
+        charts[coin.id].data.datasets[0].data = coin.sparkline_in_7d.price;
+        charts[coin.id].update();
       }
-      sendTelegramMessage("✅ You are now subscribed to DealShield alerts!");
-      alert("Subscription successful! You will now receive Telegram alerts.");
-    }
 
-    // Auto-refresh every 30 seconds
-    setInterval(fetchCryptoPrices, 30000);
-    fetchCryptoPrices();
-  </script>
+      // Telegram alert example: Bitcoin > 50000
+      if (coin.id === "bitcoin" && coin.current_price > 50000) {
+        sendTelegramMessage(`🚨 Bitcoin is above $50,000: $${coin.current_price}`);
+      }
+    });
+
+    document.getElementById("top-movers").textContent = `Top mover: ${coinNames[topMover.coin]} ${topMover.change >= 0 ? "+" : ""}${topMover.change.toFixed(2)}%`;
+
+  } catch(err) {
+    console.error("Error fetching crypto data:", err);
+  }
+}
+
+// Telegram subscription functions
+function sendTelegramMessage(msg) {
+  const botToken = "YOUR_BOT_TOKEN"; // <-- Replace with your Telegram bot token
+  const chatId = document.getElementById("chatId").value;
+  if (!chatId) return;
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ chat_id: chatId, text: msg })
+  }).catch(err => console.error("Telegram error:", err));
+}
+
+function sendTelegramAlert() {
+  const chatId = document.getElementById("chatId").value;
+  if (!chatId) { alert("Enter your Telegram Chat ID!"); return; }
+  sendTelegramMessage("✅ You are now subscribed to DealShield alerts!");
+  alert("Subscription successful! You will now receive Telegram alerts.");
+}
+
+// Theme toggle
+let darkMode = false;
+function toggleTheme() {
+  darkMode = !darkMode;
+  document.body.style.background = darkMode ? "#1c1c1c" : "#f0f2f5";
+  document.body.style.color = darkMode ? "#eee" : "#333";
+  document.querySelectorAll(".card, canvas").forEach(el => el.style.background = darkMode ? "#2c2c2c" : "#fff");
+  document.getElementById("toggle-theme").textContent = darkMode ? "Light Mode" : "Dark Mode";
+}
+
+// Auto-refresh every 30 seconds
+setInterval(fetchCryptoData, 30000);
+fetchCryptoData();
+
+// PayPal Buttons
+paypal.Buttons({
+  style: { shape: 'rect', color: 'blue', layout: 'vertical', label: 'subscribe' },
+  createSubscription: function(data, actions) {
+    return actions.subscription.create({
+      plan_id: 'YOUR_PAYPAL_PLAN_ID' // <-- Create plan in PayPal Dashboard
+    });
+  },
+  onApprove: function(data, actions) {
+    alert('Thank you for subscribing! You will now get premium alerts.');
+    // Here you can store chat ID for premium alerts
+  }
+}).render('#paypal-button-container');
+</script>
 
 </body>
 </html>
