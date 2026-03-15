@@ -6,9 +6,9 @@
 <title>DealShield Pro Dashboard</title>
 
 <!-- ============================================= -->
-<!-- 👇 PAYPAL SDK SCRIPT - REPLACE CLIENT ID HERE -->
+<!-- 👇 PAYPAL SDK SCRIPT - CLIENT ID INCORPORATED -->
 <!-- ============================================= -->
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=ARF6hlAqtQpeku8fTRadY_bgYKr2GdxntEybk82nj4Yg7L4OkFRwHVJDBq9kcDN93CHRbDaq54OEgP6j&currency=USD"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -39,10 +39,10 @@ canvas { background:white; border-radius:10px; padding:10px; box-shadow:0 4px 10
 <body>
 
 <!-- ============================================= -->
-<!-- 👇 HEADER SECTION - REPLACE LOGO URL HERE -->
+<!-- 👇 HEADER SECTION - REPLACE LOGO MANUALLY -->
 <!-- ============================================= -->
 <header>
-  <img src="YOUR_LOGO_URL_HERE" alt="DealShield Logo">
+  <img src="DealshealdAI-Bot logo.jpg" alt="DealShield Logo">
   <h1>DealShield Pro</h1>
   <p>Live Crypto Prices & Telegram Alerts</p>
 </header>
@@ -79,7 +79,7 @@ canvas { background:white; border-radius:10px; padding:10px; box-shadow:0 4px 10
 
 <script>
 // =============================================
-// 👇 TELEGRAM CONFIGURATION - REPLACE IF NEEDED
+// 👇 TELEGRAM CONFIGURATION - KEYS INCORPORATED
 // =============================================
 const botToken = "8532925950:AAGaNZVOXFMjx8EU3Pm-OR69WcNUFeeElD4";
 const chatIds = ["8519623109", "-1003766072650"]; // private and group
@@ -184,7 +184,7 @@ setInterval(fetchCryptoData,30000);
 fetchCryptoData();
 
 // =============================================
-// 👇 PAYPAL BUTTONS - REPLACE PLAN ID HERE
+// 👇 PAYPAL BUTTONS - CLIENT SECRET USED IN BACKEND (optional)
 // =============================================
 paypal.Buttons({
   style:{shape:'rect', color:'blue', layout:'vertical', label:'subscribe'},
