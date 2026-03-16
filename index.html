@@ -19,16 +19,20 @@ header{
 background:#0f172a;
 padding:20px;
 text-align:center;
-border-bottom:2px solid #1e293b;
 }
 
 header h1{
 color:#38bdf8;
 }
 
+.logo{
+margin-top:10px;
+}
+
 .navbar{
 display:flex;
 justify-content:center;
+flex-wrap:wrap;
 background:#111827;
 padding:10px;
 }
@@ -39,34 +43,28 @@ border:none;
 color:white;
 padding:10px 15px;
 margin:5px;
-cursor:pointer;
 border-radius:6px;
+cursor:pointer;
 }
 
 .navbar button:hover{
 background:#38bdf8;
 }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
+.page{
+display:none;
 padding:20px;
 }
 
 .card{
 background:#111827;
-border-radius:10px;
 padding:20px;
-box-shadow:0 0 10px rgba(56,189,248,0.3);
+margin:10px;
+border-radius:10px;
 }
 
 .tp{color:#22c55e;}
 .sl{color:#ef4444;}
-
-.page{
-padding:20px;
-}
 
 </style>
 
@@ -78,90 +76,12 @@ padding:20px;
 
 <h1>DealShield Trading Terminal V3</h1>
 
-<!--<!DOCTYPE html>
-<html>
-<head>
+<!-- PUT YOUR LOGO FILE NAME BELOW -->
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>DealShield Terminal V3</title>
-
-<style>
-
-body{
-background:#050505;
-color:white;
-font-family:Arial;
-margin:0;
-}
-
-header{
-background:#0f172a;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #1e293b;
-}
-
-header h1{
-color:#38bdf8;
-}
-
-.navbar{
-display:flex;
-justify-content:center;
-background:#111827;
-padding:10px;
-}
-
-.navbar button{
-background:#1f2937;
-border:none;
-color:white;
-padding:10px 15px;
-margin:5px;
-cursor:pointer;
-border-radius:6px;
-}
-
-.navbar button:hover{
-background:#38bdf8;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card{
-background:#111827;
-border-radius:10px;
-padding:20px;
-box-shadow:0 0 10px rgba(56,189,248,0.3);
-}
-
-.tp{color:#22c55e;}
-.sl{color:#ef4444;}
-
-.page{
-padding:20px;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<h1>DealShield Trading Terminal V3</h1>
-
-<!-- PUT YOUR LOGO HERE -->
-<img src="YOUR_LOGO_URL_HERE" height="60">
+<img src="DealshealdAI-Bot logo.jpg" height="60" class="logo">
 
 </header>
+
 
 <div class="navbar">
 
@@ -173,34 +93,41 @@ padding:20px;
 
 </div>
 
+
 <!-- HOME PAGE -->
 
 <div id="home" class="page">
 
-<div class="grid">
-
 <div class="card">
+
 <h3>BTC / USD</h3>
+
 <p id="btcPrice">Loading...</p>
+
 </div>
 
 <div class="card">
+
 <h3>GOLD / USD</h3>
-<p id="goldPrice">Loading...</p>
+
+<p>Live Gold Data</p>
+
 </div>
 
 <div class="card">
+
 <h3>USD / JPY</h3>
-<p id="jpyPrice">Loading...</p>
-</div>
+
+<p>Forex Pair</p>
 
 </div>
 
 </div>
+
 
 <!-- SIGNALS -->
 
-<div id="signals" class="page" style="display:none;">
+<div id="signals" class="page">
 
 <div class="card">
 
@@ -220,43 +147,40 @@ SL <span class="sl">5068.507</span>
 
 </div>
 
+
 <!-- MARKETS -->
 
-<div id="markets" class="page" style="display:none;">
+<div id="markets" class="page">
 
 <div class="card">
 
 <h3>Live Markets</h3>
 
-<p>BTC price updates automatically</p>
-
-<p>Gold price from GoldAPI</p>
-
-<p>USDJPY forex price</p>
+<p>BTC, Gold, Forex prices</p>
 
 </div>
 
 </div>
+
 
 <!-- WHALE TRACKER -->
 
-<div id="whales" class="page" style="display:none;">
+<div id="whales" class="page">
 
 <div class="card">
 
 <h3>Whale Activity</h3>
 
-<p>Large BTC transfer detected</p>
-
-<p>$8,500,000 moved</p>
+<p>Large BTC movement detected</p>
 
 </div>
 
 </div>
+
 
 <!-- SUBSCRIPTION -->
 
-<div id="subscribe" class="page" style="display:none;">
+<div id="subscribe" class="page">
 
 <div class="card">
 
@@ -272,17 +196,20 @@ SL <span class="sl">5068.507</span>
 
 </div>
 
+
 <script>
 
 function showPage(page){
 
 let pages=document.querySelectorAll(".page")
 
-pages.forEach(p=>p.style.display="none")
+pages.forEach(p => p.style.display="none")
 
 document.getElementById(page).style.display="block"
 
 }
+
+showPage("home")
 
 async function loadBTC(){
 
@@ -302,596 +229,4 @@ setInterval(loadBTC,30000)
 
 </body>
 
-</html>-->
-<img src="<!DOCTYPE html>
-<html>
-<head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>DealShield Terminal V3</title>
-
-<style>
-
-body{
-background:#050505;
-color:white;
-font-family:Arial;
-margin:0;
-}
-
-header{
-background:#0f172a;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #1e293b;
-}
-
-header h1{
-color:#38bdf8;
-}
-
-.navbar{
-display:flex;
-justify-content:center;
-background:#111827;
-padding:10px;
-}
-
-.navbar button{
-background:#1f2937;
-border:none;
-color:white;
-padding:10px 15px;
-margin:5px;
-cursor:pointer;
-border-radius:6px;
-}
-
-.navbar button:hover{
-background:#38bdf8;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card{
-background:#111827;
-border-radius:10px;
-padding:20px;
-box-shadow:0 0 10px rgba(56,189,248,0.3);
-}
-
-.tp{color:#22c55e;}
-.sl{color:#ef4444;}
-
-.page{
-padding:20px;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<h1>DealShield Trading Terminal V3</h1>
-
-<!-- PUT YOUR LOGO HERE -->
-<img src="<!DOCTYPE html>
-<html>
-<head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>DealShield Terminal V3</title>
-
-<style>
-
-body{
-background:#050505;
-color:white;
-font-family:Arial;
-margin:0;
-}
-
-header{
-background:#0f172a;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #1e293b;
-}
-
-header h1{
-color:#38bdf8;
-}
-
-.navbar{
-display:flex;
-justify-content:center;
-background:#111827;
-padding:10px;
-}
-
-.navbar button{
-background:#1f2937;
-border:none;
-color:white;
-padding:10px 15px;
-margin:5px;
-cursor:pointer;
-border-radius:6px;
-}
-
-.navbar button:hover{
-background:#38bdf8;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card{
-background:#111827;
-border-radius:10px;
-padding:20px;
-box-shadow:0 0 10px rgba(56,189,248,0.3);
-}
-
-.tp{color:#22c55e;}
-.sl{color:#ef4444;}
-
-.page{
-padding:20px;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<h1>DealShield Trading Terminal V3</h1>
-
-<!-- PUT YOUR LOGO HERE -->
-<img src="YOUR_LOGO_URL_HERE" height="60">
-
-</header>
-
-<div class="navbar">
-
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('signals')">Signals</button>
-<button onclick="showPage('markets')">Markets</button>
-<button onclick="showPage('whales')">Whale Tracker</button>
-<button onclick="showPage('subscribe')">Subscription</button>
-
-</div>
-
-<!-- HOME PAGE -->
-
-<div id="home" class="page">
-
-<div class="grid">
-
-<div class="card">
-<h3>BTC / USD</h3>
-<p id="btcPrice">Loading...</p>
-</div>
-
-<div class="card">
-<h3>GOLD / USD</h3>
-<p id="goldPrice">Loading...</p>
-</div>
-
-<div class="card">
-<h3>USD / JPY</h3>
-<p id="jpyPrice">Loading...</p>
-</div>
-
-</div>
-
-</div>
-
-<!-- SIGNALS -->
-
-<div id="signals" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Gold Signal</h3>
-
-ENTRY 5070.770
-
-<br>
-
-TP <span class="tp">5075.000</span>
-
-<br>
-
-SL <span class="sl">5068.507</span>
-
-</div>
-
-</div>
-
-<!-- MARKETS -->
-
-<div id="markets" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Live Markets</h3>
-
-<p>BTC price updates automatically</p>
-
-<p>Gold price from GoldAPI</p>
-
-<p>USDJPY forex price</p>
-
-</div>
-
-</div>
-
-<!-- WHALE TRACKER -->
-
-<div id="whales" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Whale Activity</h3>
-
-<p>Large BTC transfer detected</p>
-
-<p>$8,500,000 moved</p>
-
-</div>
-
-</div>
-
-<!-- SUBSCRIPTION -->
-
-<div id="subscribe" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Subscription</h3>
-
-<a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526">PayPal Direct</a>
-
-<br><br>
-
-<a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4">PayPal Checkout</a>
-
-</div>
-
-</div>
-
-<script>
-
-function showPage(page){
-
-let pages=document.querySelectorAll(".page")
-
-pages.forEach(p=>p.style.display="none")
-
-document.getElementById(page).style.display="block"
-
-}
-
-async function loadBTC(){
-
-const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
-
-const data=await r.json()
-
-document.getElementById("btcPrice").innerText="$"+data.bitcoin.usd
-
-}
-
-loadBTC()
-
-setInterval(loadBTC,30000)
-
-</script>
-
-</body>
-
-</html>" height="60">
-
-</header>
-
-<div class="navbar">
-
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('signals')">Signals</button>
-<button onclick="showPage('markets')">Markets</button>
-<button onclick="showPage('whales')">Whale Tracker</button>
-<button onclick="showPage('subscribe')">Subscription</button>
-
-</div>
-
-<!-- HOME PAGE -->
-
-<div id="home" class="page">
-
-<div class="grid">
-
-<div class="card">
-<h3>BTC / USD</h3>
-<p id="btcPrice">Loading...</p>
-</div>
-
-<div class="card">
-<h3>GOLD / USD</h3>
-<p id="goldPrice">Loading...</p>
-</div>
-
-<div class="card">
-<h3>USD / JPY</h3>
-<p id="jpyPrice">Loading...</p>
-</div>
-
-</div>
-
-</div>
-
-<!-- SIGNALS -->
-
-<div id="signals" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Gold Signal</h3>
-
-ENTRY 5070.770
-
-<br>
-
-TP <span class="tp">5075.000</span>
-
-<br>
-
-SL <span class="sl">5068.507</span>
-
-</div>
-
-</div>
-
-<!-- MARKETS -->
-
-<div id="markets" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Live Markets</h3>
-
-<p>BTC price updates automatically</p>
-
-<p>Gold price from GoldAPI</p>
-
-<p>USDJPY forex price</p>
-
-</div>
-
-</div>
-
-<!-- WHALE TRACKER -->
-
-<div id="whales" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Whale Activity</h3>
-
-<p>Large BTC transfer detected</p>
-
-<p>$8,500,000 moved</p>
-
-</div>
-
-</div>
-
-<!-- SUBSCRIPTION -->
-
-<div id="subscribe" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Subscription</h3>
-
-<a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526">PayPal Direct</a>
-
-<br><br>
-
-<a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4">PayPal Checkout</a>
-
-</div>
-
-</div>
-
-<script>
-
-function showPage(page){
-
-let pages=document.querySelectorAll(".page")
-
-pages.forEach(p=>p.style.display="none")
-
-document.getElementById(page).style.display="block"
-
-}
-
-async function loadBTC(){
-
-const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
-
-const data=await r.json()
-
-document.getElementById("btcPrice").innerText="$"+data.bitcoin.usd
-
-}
-
-loadBTC()
-
-setInterval(loadBTC,30000)
-
-</script>
-
-</body>
-
-</html> height="60">
-
-</header>
-
-<div class="navbar">
-
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('signals')">Signals</button>
-<button onclick="showPage('markets')">Markets</button>
-<button onclick="showPage('whales')">Whale Tracker</button>
-<button onclick="showPage('subscribe')">Subscription</button>
-
-</div>
-
-<!-- HOME PAGE -->
-
-<div id="home" class="page">
-
-<div class="grid">
-
-<div class="card">
-<h3>BTC / USD</h3>
-<p id="btcPrice">Loading...</p>
-</div>
-
-<div class="card">
-<h3>GOLD / USD</h3>
-<p id="goldPrice">Loading...</p>
-</div>
-
-<div class="card">
-<h3>USD / JPY</h3>
-<p id="jpyPrice">Loading...</p>
-</div>
-
-</div>
-
-</div>
-
-<!-- SIGNALS -->
-
-<div id="signals" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Gold Signal</h3>
-
-ENTRY 5070.770
-
-<br>
-
-TP <span class="tp">5075.000</span>
-
-<br>
-
-SL <span class="sl">5068.507</span>
-
-</div>
-
-</div>
-
-<!-- MARKETS -->
-
-<div id="markets" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Live Markets</h3>
-
-<p>BTC price updates automatically</p>
-
-<p>Gold price from GoldAPI</p>
-
-<p>USDJPY forex price</p>
-
-</div>
-
-</div>
-
-<!-- WHALE TRACKER -->
-
-<div id="whales" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Whale Activity</h3>
-
-<p>Large BTC transfer detected</p>
-
-<p>$8,500,000 moved</p>
-
-</div>
-
-</div>
-
-<!-- SUBSCRIPTION -->
-
-<div id="subscribe" class="page" style="display:none;">
-
-<div class="card">
-
-<h3>Subscription</h3>
-
-<a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526">PayPal Direct</a>
-
-<br><br>
-
-<a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4">PayPal Checkout</a>
-
-</div>
-
-</div>
-
-<script>
-
-function showPage(page){
-
-let pages=document.querySelectorAll(".page")
-
-pages.forEach(p=>p.style.display="none")
-
-document.getElementById(page).style.display="block"
-
-}
-
-async function loadBTC(){
-
-const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
-
-const data=await r.json()
-
-document.getElementById("btcPrice").innerText="$"+data.bitcoin.usd
-
-}
-
-loadBTC()
-
-setInterval(loadBTC,30000)
-
-</script>
-
-</body>
-
-</html>
+  </html>
