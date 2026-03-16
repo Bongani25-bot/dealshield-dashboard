@@ -1,241 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DealShield Elite Terminal</title>
-
-<style>
-body {
-  margin:0; padding:0; font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg,#0a0a0f,#1f1f29,#10101a);
-  color:#fff;
-  overflow-x:hidden;
-}
-
-header {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  font-size:2em;
-  font-weight:bold;
-  background: rgba(0,0,0,0.85);
-  text-align:center;
-  flex-wrap:wrap;
-  text-shadow: 1px 1px 5px #000;
-}
-
-header span {
-  color:#00ffff; font-weight:bold; font-size:2em; white-space: nowrap;
-}
-
-.panel {
-  background: rgba(255,255,255,0.05); 
-  margin:15px auto; padding:15px; border-radius:12px; 
-  max-width:700px; box-shadow:0 0 20px rgba(0,255,255,0.2);
-  transition: all 0.3s ease;
-}
-.panel:hover { box-shadow:0 0 30px rgba(0,255,255,0.5); }
-
-.panel h2 { margin-top:0; color:#00ffff; text-shadow:1px 1px 5px #000; }
-
-ul { list-style:none; padding-left:0; }
-li { padding:5px 0; font-weight:bold; }
-
-button.subscribe {
-  background:#00ffff; color:#000; border:none; padding:12px 25px; 
-  border-radius:10px; font-weight:bold; cursor:pointer; margin:10px;
-  font-size:1em; transition: all 0.3s ease;
-}
-button.subscribe:hover { transform:scale(1.05); box-shadow:0 0 20px #00ffff; }
-
-.neon { color:#00ffff; text-shadow:0 0 5px #00ffff,0 0 10px #00ffff; }
-
-.panel ul { max-height:200px; overflow-y:auto; }
-
-@media (max-width:600px) {
-  header { flex-direction: column; }
-  header span { font-size:1.5em; margin-bottom:10px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealShield Dashboard</title>
+  <style>
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #161b22;
+      border-bottom: 2px solid #30363d;
+    }
+    header h1 {
+      color: #58a6ff;
+      margin: 0;
+    }
+    header img {
+      max-height: 80px;
+      margin-top: 10px;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .asset-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+      transition: transform 0.2s;
+    }
+    .asset-card:hover {
+      transform: translateY(-5px);
+    }
+    .asset-card h3 {
+      margin-top: 0;
+      color: #58a6ff;
+    }
+    .tp { color: #2ea043; font-weight: bold; }
+    .sl { color: #f85149; font-weight: bold; }
+    .subscription {
+      text-align: center;
+      margin: 20px;
+    }
+    .subscription a {
+      display: inline-block;
+      background: #238636;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 5px;
+    }
+  </style>
 </head>
 <body>
 
 <header>
-  <span>DealshealdAI-Bot logo.jpg</span>
+  <h1>DealShield Dashboard</h1>
+  <!-- PUT YOUR LOGO HERE -->
+  <img src="DealshealdAI-Bot logo.jpg" alt="Company Logo">
 </header>
 
-<div class="panel">
-  <h2>💹 Multi-Coin & Gold Prices</h2>
-  <ul id="multiCoinPrices"><li>Loading prices…</li></ul>
+<div class="subscription">
+  <a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526" target="_blank">PayPal Direct</a>
+  <a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4" target="_blank">PayPal Checkout</a>
+  <!-- Phantom Wallet / Stripe placeholders -->
 </div>
 
-<div class="panel">
-  <h2>📈 Top Movers</h2>
-  <ul id="topMovers"><li>Loading…</li></ul>
+<div class="dashboard">
+  <!-- Gold/USD Block -->
+  <div class="asset-card">
+    <h3>GOLD / USD</h3>
+    <p>Session: <span id="gold-session">LONDON</span></p>
+    <p>Trend: <span id="gold-trend">BULLISH</span></p>
+    <p>Entry: <span id="gold-entry">2079.45</span></p>
+    <p>TP 🟢: <span id="gold-tp" class="tp">2085.30</span></p>
+    <p>SL 🔴: <span id="gold-sl" class="sl">2074.80</span></p>
+  </div>
+
+  <!-- BTC/USD Block -->
+  <div class="asset-card">
+    <h3>BTC / USD</h3>
+    <p>Session: <span id="btc-session">LONDON</span></p>
+    <p>Trend: <span id="btc-trend">BULLISH</span></p>
+    <p>Entry: <span id="btc-entry">27890.12</span></p>
+    <p>TP 🟢: <span id="btc-tp" class="tp">28050.00</span></p>
+    <p>SL 🔴: <span id="btc-sl" class="sl">27720.50</span></p>
+  </div>
+
+  <!-- USD/JPY Block -->
+  <div class="asset-card">
+    <h3>USD / JPY</h3>
+    <p>Session: <span id="usd-jpy-session">LONDON</span></p>
+    <p>Trend: <span id="usd-jpy-trend">BEARISH</span></p>
+    <p>Entry: <span id="usd-jpy-entry">132.45</span></p>
+    <p>TP 🟢: <span id="usd-jpy-tp" class="tp">133.00</span></p>
+    <p>SL 🔴: <span id="usd-jpy-sl" class="sl">131.80</span></p>
+  </div>
 </div>
 
-<div class="panel">
-  <h2>🐋 Whale Activity Feed</h2>
-  <ul id="whales"><li>Scanning blockchain…</li></ul>
-</div>
-
-<div class="panel">
-  <h2>🧠 AI Signals</h2>
-  <ul id="signals"><li>Scanning market…</li></ul>
-</div>
-
-<!-- ==========================
-     Subscription / Payment
-========================== -->
-<div class="panel" style="text-align:center;">
-  <h2>💰 Subscribe Now</h2>
-  <p class="neon">$5/month – Unlock Premium Signals & Alerts</p>
-
-  <!-- PayPal Direct Payment -->
-  <button class="subscribe" onclick="window.open('https://www.paypal.com/ncp/payment/YMH9HJK3EN526','_blank')">
-    PayPal Direct
-  </button>
-
-  <!-- PayPal Checkout $5 -->
-  <button class="subscribe" onclick="window.open('https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4','_blank')">
-    PayPal Checkout
-  </button>
-
-  <!-- Card payment button (Stripe placeholder) -->
-  <button class="subscribe" onclick="window.open('YOUR_STRIPE_LINK','_blank')">
-    Card
-  </button>
-
-  <!-- Phantom Wallet button -->
-  <button class="subscribe" onclick="window.open('https://phantom.app/','_blank')">
-    Phantom Wallet
-  </button>
-</div>
-
-<script>
-// ======================
-// KEYS & CONFIGURATION
-// ======================
-const telegramBotToken = "8532925950:AAGaNZVOXFMjx8EU3Pm-OR69WcNUFeeElD4";
-const telegramChatIDs = ["8519623109", "-1003766072650"];
-const goldApiKey = "goldapi-1lm9hgsmmshukdf-io";
-const phantomWallet = "Cu7HrDpqS7JAgBXc5hJrzEwY4JQECdtmTZA6aZFXTHdK";
-const paypalClientID = "ARF6hlAqtQpeku8fTRadY_bgYKr2GdxntEybk82nj4Yg7L4OkFRwHVJDBq9kcDN93CHRbDaq54OEgP6j";
-const paypalSecret = "EO53Ngxc982WN-sfi1tqVsutFyKvkQ1hOn8zKWt9UiFJANY963YlS5jXb1HwbWzxqX4gnObl4qaCxxWB";
-
-// ======================
-// TELEGRAM FUNCTION
-// ======================
-function sendTelegram(message){
-  telegramChatIDs.forEach(chatID=>{
-    fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`,{
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({chat_id:chatID,text:message})
-    }).catch(err=>console.error("Telegram error:",err));
-  });
-}
-
-// ======================
-// MULTI-COIN & GOLD PRICES
-// ======================
-async function updateMultiCoinPrices(){
-  try{
-    const coins = ["bitcoin","ethereum","solana","binancecoin","cardano","dogecoin","ripple"];
-    const coinRes = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coins.join(',')}&vs_currencies=usd`);
-    const coinData = await coinRes.json();
-
-    const goldRes = await fetch("https://www.goldapi.io/api/XAU/USD",{
-      method:"GET",
-      headers:{ "x-access-token":goldApiKey, "Content-Type":"application/json" }
-    });
-    const goldData = await goldRes.json();
-    const goldPrice = goldData.price;
-
-    const list = document.getElementById("multiCoinPrices");
-    list.innerHTML="";
-    coins.forEach(c=>{
-      const li = document.createElement("li");
-      li.textContent=`${c.toUpperCase()}: $${coinData[c].usd}`;
-      list.appendChild(li);
-    });
-
-    const liGold = document.createElement("li");
-    liGold.textContent=`GOLD (XAU/USD): $${goldPrice}`;
-    list.appendChild(liGold);
-
-  }catch(err){ console.error("Price fetch error:",err); }
-}
-updateMultiCoinPrices();
-setInterval(updateMultiCoinPrices,300000);
-
-// ======================
-// TOP MOVERS
-// ======================
-function updateTopMovers(){
-  const movers=["SOL +6.3%","ADA +5.1%","XRP +4.4%","DOGE -3.2%","Gold -0.3%"];
-  const list=document.getElementById("topMovers");
-  list.innerHTML="";
-  movers.forEach(m=>{
-    const li=document.createElement("li");
-    li.textContent=m; list.appendChild(li);
-  });
-}
-updateTopMovers();
-setInterval(updateTopMovers,300000);
-
-// ======================
-// WHALE ACTIVITY
-// ======================
-function whaleFeed(){
-  const whales=[
-    "🐋 1,250 BTC moved to exchange",
-    "🐋 700 ETH transferred to cold wallet",
-    "🐋 SOL whale accumulation detected",
-    "🐋 Large BTC buy detected"
-  ];
-  const list=document.getElementById("whales");
-  list.innerHTML="";
-  whales.forEach(w=>{
-    const li=document.createElement("li");
-    li.textContent=w; list.appendChild(li);
-    sendTelegram("🐋 Whale Alert: "+w);
-  });
-}
-whaleFeed();
-setInterval(whaleFeed,300000);
-
-// ======================
-// AI SIGNAL ENGINE
-// ======================
-async function aiSignalEngine(){
-  try{
-    const btc=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
-    const eth=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
-    const sol=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
-    const btcPrice=(await btc.json()).bitcoin.usd;
-    const ethPrice=(await eth.json()).ethereum.usd;
-    const solPrice=(await sol.json()).solana.usd;
-
-    const signals=[];
-    signals.push(btcPrice>65000?"🚨 BTC bullish momentum detected":"⚠️ BTC consolidation zone");
-    signals.push(ethPrice>3000?"📈 ETH upward trend forming":"📉 ETH weak momentum");
-    signals.push(solPrice>120?"🔥 SOL breakout potential":"🔍 SOL accumulation zone");
-
-    const list=document.getElementById("signals");
-    list.innerHTML="";
-    signals.forEach(s=>{
-      const li=document.createElement("li");
-      li.textContent=s; list.appendChild(li);
-      sendTelegram("🧠 AI Signal Alert: "+s);
-    });
-
-  }catch(err){ console.error("AI Engine error:",err); }
-}
-aiSignalEngine();
-setInterval(aiSignalEngine,300000);
-</script>
+<!-- Additional price alerts block for other coins could go here -->
 
 </body>
 </html>
