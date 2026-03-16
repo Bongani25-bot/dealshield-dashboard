@@ -3,26 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DealShield Multi‑Coin Terminal</title>
+<title>DealShield Elite Terminal</title>
 
 <style>
-body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#0f0c29,#302b63,#24243e); color: #fff; margin:0; padding:0; }
-header { padding:20px; text-align:center; font-size:2em; font-weight:bold; background:rgba(0,0,0,0.6); }
-.panel { background:rgba(255,255,255,0.05); margin:15px auto; padding:15px; border-radius:10px; max-width:600px; }
-.panel h2 { margin-top:0; color:#00ffff; text-shadow:1px 1px 2px #000; }
-ul { list-style:none; padding-left:0; }
-li { padding:5px 0; }
-button.subscribe { background:#ffb400; color:#000; border:none; padding:10px 20px; border-radius:5px; font-weight:bold; cursor:pointer; margin-top:10px; }
-</style>
+/* Background & Body */
+body {
+  margin:0; padding:0; font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  color:#fff;
+  overflow-x:hidden;
+}
 
+/* Header / Logo */
+header {
+  display:flex; align-items:center; justify-content:center;
+  padding:20px; font-size:2em; font-weight:bold;
+  background:rgba(0,0,0,0.7); text-align:center;
+}
+header img { height:60px; margin-right:15px; }
+
+/* Panels */
+.panel {
+  background: rgba(255,255,255,0.05); 
+  margin:15px auto; padding:15px; border-radius:12px; 
+  max-width:700px; box-shadow:0 0 15px rgba(0,255,255,0.2);
+  transition: all 0.3s ease;
+}
+.panel:hover { box-shadow:0 0 25px rgba(0,255,255,0.5); }
+
+/* Panel Titles */
+.panel h2 { margin-top:0; color:#00ffff; text-shadow:1px 1px 5px #000; }
+
+/* Lists */
+ul { list-style:none; padding-left:0; }
+li { padding:5px 0; font-weight:bold; }
+
+/* Subscription Buttons */
+button.subscribe {
+  background:#ffb400; color:#000; border:none; padding:10px 20px; 
+  border-radius:8px; font-weight:bold; cursor:pointer; margin:5px;
+  transition: all 0.3s ease;
+}
+button.subscribe:hover { transform:scale(1.05); box-shadow:0 0 15px #ffb400; }
+
+/* Neon Highlight */
+.neon { color:#00ffff; text-shadow:0 0 5px #00ffff,0 0 10px #00ffff; }
+
+/* Scrollable Panel if needed */
+.panel ul { max-height:200px; overflow-y:auto; }
+</style>
 </head>
 <body>
 
-<DealshealdAI-Bot logo.jpg>🐋 DealShield Multi‑Coin & Gold Terminal</header>
+<header>
+  <img src="path-to-your-logo.png" alt="DealshealdAI-Bot logo.jpg">
+  DealShield Elite Terminal
+</header>
 
-<!-- Multi‑Coin & Gold Prices -->
+<!-- Multi-Coin & Gold Prices -->
 <div class="panel">
-  <h2>💹 Multi‑Coin & Gold Prices</h2>
+  <h2>💹 Multi-Coin & Gold Prices</h2>
   <ul id="multiCoinPrices"><li>Loading prices…</li></ul>
 </div>
 
@@ -40,97 +80,95 @@ button.subscribe { background:#ffb400; color:#000; border:none; padding:10px 20p
 
 <!-- AI Signals -->
 <div class="panel">
-  <h2>🧠 DealShield AI Signals</h2>
+  <h2>🧠 AI Signals</h2>
   <ul id="signals"><li>Scanning market…</li></ul>
 </div>
 
 <!-- Premium Subscription -->
 <div class="panel" style="text-align:center;">
   <h2>💰 Subscribe Now</h2>
-  <p>$5/month – Unlock Premium Signals & Alerts</p>
-  <button class="subscribe">Subscribe</button>
+  <p class="neon">$5/month – Unlock Premium Signals & Alerts</p>
+  <button class="subscribe">PayPal</button>
+  <button class="subscribe">Card</button>
+  <button class="subscribe">Phantom Wallet</button>
 </div>
 
 <script>
-
 // ======================
-// TELEGRAM CONFIG
+// KEYS & CONFIGURATION
 // ======================
 const telegramBotToken = "8532925950:AAGaNZVOXFMjx8EU3Pm-OR69WcNUFeeElD4";
 const telegramChatIDs = ["8519623109", "-1003766072650"];
+const goldApiKey = "goldapi-1lm9hgsmmshukdf-io";
+const phantomWallet = "Cu7HrDpqS7JAgBXc5hJrzEwY4JQECdtmTZA6aZFXTHdK";
+const paypalClientID = "ARF6hlAqtQpeku8fTRadY_bgYKr2GdxntEybk82nj4Yg7L4OkFRwHVJDBq9kcDN93CHRbDaq54OEgP6j";
+const paypalSecret = "EO53Ngxc982WN-sfi1tqVsutFyKvkQ1hOn8zKWt9UiFJANY963YlS5jXb1HwbWzxqX4gnObl4qaCxxWB";
 
+// ======================
+// TELEGRAM FUNCTION
+// ======================
 function sendTelegram(message){
-  telegramChatIDs.forEach(chatID => {
-    fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-      method:"POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ chat_id: chatID, text: message })
-    }).catch(err => console.error("Telegram send error:", err));
+  telegramChatIDs.forEach(chatID=>{
+    fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`,{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({chat_id:chatID,text:message})
+    }).catch(err=>console.error("Telegram error:",err));
   });
 }
 
 // ======================
-// UPDATE MULTI‑COIN & GOLD PRICES
+// MULTI-COIN & GOLD PRICES
 // ======================
 async function updateMultiCoinPrices(){
-  try {
+  try{
     const coins = ["bitcoin","ethereum","solana","binancecoin","cardano","dogecoin","ripple"];
     const coinRes = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coins.join(',')}&vs_currencies=usd`);
     const coinData = await coinRes.json();
 
-    // GOLD API
-    const goldRes = await fetch("https://www.goldapi.io/api/XAU/USD", {
-      method: "GET",
-      headers: {
-        "x-access-token": "goldapi-1lm9hgsmmshukdf-io",
-        "Content-Type": "application/json"
-      }
+    const goldRes = await fetch("https://www.goldapi.io/api/XAU/USD",{
+      method:"GET",
+      headers:{ "x-access-token":goldApiKey, "Content-Type":"application/json" }
     });
     const goldData = await goldRes.json();
     const goldPrice = goldData.price;
 
     const list = document.getElementById("multiCoinPrices");
-    list.innerHTML = "";
-
-    coins.forEach(c => {
+    list.innerHTML="";
+    coins.forEach(c=>{
       const li = document.createElement("li");
-      li.textContent = `${c.toUpperCase()} : $${coinData[c].usd}`;
+      li.textContent=`${c.toUpperCase()}: $${coinData[c].usd}`;
       list.appendChild(li);
     });
 
     const liGold = document.createElement("li");
-    liGold.textContent = `GOLD (XAU/USD) : $${goldPrice}`;
+    liGold.textContent=`GOLD (XAU/USD): $${goldPrice}`;
     list.appendChild(liGold);
 
-  } catch(err){
-    console.error("Price fetch error:", err);
-  }
+  }catch(err){ console.error("Price fetch error:",err); }
 }
-
 updateMultiCoinPrices();
-setInterval(updateMultiCoinPrices, 300000); // refresh every 5 min
+setInterval(updateMultiCoinPrices,300000);
 
 // ======================
 // TOP MOVERS
 // ======================
 function updateTopMovers(){
-  const movers = ["SOL +6.3%","ADA +5.1%","XRP +4.4%","DOGE -3.2%","Gold -0.3%"];
-  const list = document.getElementById("topMovers");
-  list.innerHTML = "";
-  movers.forEach(m => {
-    const li = document.createElement("li");
-    li.textContent = m;
-    list.appendChild(li);
+  const movers=["SOL +6.3%","ADA +5.1%","XRP +4.4%","DOGE -3.2%","Gold -0.3%"];
+  const list=document.getElementById("topMovers");
+  list.innerHTML="";
+  movers.forEach(m=>{
+    const li=document.createElement("li");
+    li.textContent=m; list.appendChild(li);
   });
 }
 updateTopMovers();
-setInterval(updateTopMovers, 300000);
+setInterval(updateTopMovers,300000);
 
 // ======================
 // WHALE ACTIVITY
 // ======================
 function whaleFeed(){
-  const whales = [
+  const whales=[
     "🐋 1,250 BTC moved to exchange",
     "🐋 700 ETH transferred to cold wallet",
     "🐋 SOL whale accumulation detected",
@@ -138,11 +176,10 @@ function whaleFeed(){
   ];
   const list=document.getElementById("whales");
   list.innerHTML="";
-  whales.forEach(w => {
-    const li = document.createElement("li");
-    li.textContent = w;
-    list.appendChild(li);
-    sendTelegram("🐋 Whale Alert: " + w);
+  whales.forEach(w=>{
+    const li=document.createElement("li");
+    li.textContent=w; list.appendChild(li);
+    sendTelegram("🐋 Whale Alert: "+w);
   });
 }
 whaleFeed();
@@ -153,52 +190,39 @@ setInterval(whaleFeed,300000);
 // ======================
 async function aiSignalEngine(){
   try{
-    const btc = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
-    const eth = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
-    const sol = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
+    const btc=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+    const eth=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+    const sol=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
+    const btcPrice=(await btc.json()).bitcoin.usd;
+    const ethPrice=(await eth.json()).ethereum.usd;
+    const solPrice=(await sol.json()).solana.usd;
 
-    const btcData = await btc.json();
-    const ethData = await eth.json();
-    const solData = await sol.json();
+    const signals=[];
+    signals.push(btcPrice>65000?"🚨 BTC bullish momentum detected":"⚠️ BTC consolidation zone");
+    signals.push(ethPrice>3000?"📈 ETH upward trend forming":"📉 ETH weak momentum");
+    signals.push(solPrice>120?"🔥 SOL breakout potential":"🔍 SOL accumulation zone");
 
-    const btcPrice = btcData.bitcoin.usd;
-    const ethPrice = ethData.ethereum.usd;
-    const solPrice = solData.solana.usd;
-
-    const signals = [];
-    if(btcPrice > 65000) signals.push("🚨 BTC bullish momentum detected");
-    else signals.push("⚠️ BTC consolidation zone");
-
-    if(ethPrice > 3000) signals.push("📈 ETH upward trend forming");
-    else signals.push("📉 ETH weak momentum");
-
-    if(solPrice > 120) signals.push("🔥 SOL breakout potential");
-    else signals.push("🔍 SOL accumulation zone");
-
-    const list = document.getElementById("signals");
-    list.innerHTML = "";
-    signals.forEach(s => {
-      const li = document.createElement("li");
-      li.textContent = s;
-      list.appendChild(li);
-      sendTelegram("🧠 AI Signal Alert: " + s);
+    const list=document.getElementById("signals");
+    list.innerHTML="";
+    signals.forEach(s=>{
+      const li=document.createElement("li");
+      li.textContent=s; list.appendChild(li);
+      sendTelegram("🧠 AI Signal Alert: "+s);
     });
 
-  } catch(err){
-    console.error("AI Engine error:", err);
-  }
+  }catch(err){ console.error("AI Engine error:",err); }
 }
 aiSignalEngine();
 setInterval(aiSignalEngine,300000);
 
 // ======================
-// SUBSCRIBE BUTTON
+// SUBSCRIBE BUTTONS
 // ======================
-document.querySelector(".subscribe").addEventListener("click",()=>{
-  alert("Premium access coming soon — PayPal & Crypto are integrated!");
+document.querySelectorAll(".subscribe").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    alert(`Premium access via ${btn.textContent} coming soon!`);
+  });
 });
-
 </script>
-
 </body>
 </html>
