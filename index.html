@@ -1,232 +1,300 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>DealShield Terminal V3</title>
+<title>DealShield Terminal V6 – Hybrid Command</title>
 
 <style>
-
 body{
-background:#050505;
-color:white;
-font-family:Arial;
-margin:0;
+    background:#050505;
+    color:white;
+    font-family:Arial, sans-serif;
+    margin:0;
 }
 
 header{
-background:#0f172a;
-padding:20px;
-text-align:center;
+    background:#0f172a;
+    padding:20px;
+    text-align:center;
 }
 
 header h1{
-color:#38bdf8;
+    color:#38bdf8;
+    margin:0;
 }
 
 .logo{
-margin-top:10px;
+    margin-top:10px;
 }
 
+/* Navbar */
 .navbar{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-background:#111827;
-padding:10px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    background:#111827;
+    padding:10px;
 }
 
 .navbar button{
-background:#1f2937;
-border:none;
-color:white;
-padding:10px 15px;
-margin:5px;
-border-radius:6px;
-cursor:pointer;
+    background:#1f2937;
+    border:none;
+    color:white;
+    padding:10px 15px;
+    margin:5px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
 .navbar button:hover{
-background:#38bdf8;
+    background:#38bdf8;
 }
 
+/* Pages */
 .page{
-display:none;
-padding:20px;
+    display:none;
+    padding:20px;
 }
 
+/* Data cards */
 .card{
-background:#111827;
-padding:20px;
-margin:10px;
-border-radius:10px;
+    background:#111827;
+    padding:20px;
+    margin:10px;
+    border-radius:10px;
+    box-shadow:0 0 10px #0ea5e9;
 }
 
-.tp{color:#22c55e;}
-.sl{color:#ef4444;}
+.tp{color:#22c55e; font-weight:bold;}
+.sl{color:#ef4444; font-weight:bold;}
+
+/* News ticker */
+.ticker-container{
+    width:100%;
+    background:#1f2937;
+    overflow:hidden;
+    white-space:nowrap;
+    box-sizing:border-box;
+    padding:5px 0;
+}
+
+.ticker{
+    display:inline-block;
+    padding-left:100%;
+    animation: ticker 20s linear infinite;
+}
+
+@keyframes ticker{
+    0% {transform: translateX(0);}
+    100% {transform: translateX(-100%);}
+}
 
 </style>
-
 </head>
-
 <body>
 
 <header>
-
-<h1>DealShield Trading Terminal V3</h1>
+<h1>DealShield Terminal V6</h1>
 
 <!-- PUT YOUR LOGO FILE NAME BELOW -->
-
 <img src="DealshealdAI-Bot logo.jpg" height="60" class="logo">
+
+<!-- News Ticker -->
+<div class="ticker-container">
+<div class="ticker" id="newsTicker">Loading news...</div>
+</div>
 
 </header>
 
-
 <div class="navbar">
-
 <button onclick="showPage('home')">Home</button>
 <button onclick="showPage('signals')">Signals</button>
 <button onclick="showPage('markets')">Markets</button>
+<button onclick="showPage('charts')">Charts</button>
 <button onclick="showPage('whales')">Whale Tracker</button>
+<button onclick="showPage('pricing')">Pricing</button>
 <button onclick="showPage('subscribe')">Subscription</button>
-
 </div>
-
 
 <!-- HOME PAGE -->
-
 <div id="home" class="page">
-
 <div class="card">
-
 <h3>BTC / USD</h3>
-
 <p id="btcPrice">Loading...</p>
-
 </div>
 
 <div class="card">
-
-<h3>GOLD / USD</h3>
-
-<p>Live Gold Data</p>
-
+<h3>Gold / USD</h3>
+<p id="goldPrice">Loading...</p>
 </div>
 
 <div class="card">
-
 <h3>USD / JPY</h3>
-
-<p>Forex Pair</p>
-
+<p id="jpyPrice">Loading...</p>
 </div>
 
+<div class="card">
+<h3>Market Sentiment</h3>
+<p id="sentiment">Calculating...</p>
+</div>
 </div>
 
-
-<!-- SIGNALS -->
-
+<!-- SIGNALS PAGE -->
 <div id="signals" class="page">
-
 <div class="card">
-
-<h3>Gold Signal</h3>
-
-ENTRY 5070.770
-
-<br>
-
-TP <span class="tp">5075.000</span>
-
-<br>
-
-SL <span class="sl">5068.507</span>
-
+<h3>Live Signal Feed</h3>
+<ul id="signalFeed">
+<li>Loading signals...</li>
+</ul>
+</div>
 </div>
 
-</div>
-
-
-<!-- MARKETS -->
-
+<!-- MARKETS PAGE -->
 <div id="markets" class="page">
-
 <div class="card">
-
-<h3>Live Markets</h3>
-
-<p>BTC, Gold, Forex prices</p>
-
+<h3>Bitcoin (BTC)</h3>
+<p id="btcMarket">Loading...</p>
+</div>
+<div class="card">
+<h3>Ethereum (ETH)</h3>
+<p id="ethMarket">Loading...</p>
+</div>
+<div class="card">
+<h3>Solana (SOL)</h3>
+<p id="solMarket">Loading...</p>
+</div>
+<div class="card">
+<h3>Gold (XAU/USD)</h3>
+<p id="goldMarket">Loading...</p>
+</div>
+<div class="card">
+<h3>USD / JPY</h3>
+<p id="jpyMarket">Loading...</p>
+</div>
 </div>
 
+<!-- CHARTS PAGE -->
+<div id="charts" class="page">
+<div class="card">
+<h3>BTC / USD Chart</h3>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:BTCUSDT&interval=60" width="100%" height="400"></iframe>
+</div>
+<div class="card">
+<h3>Gold / USD Chart</h3>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=60" width="100%" height="400"></iframe>
+</div>
 </div>
 
-
-<!-- WHALE TRACKER -->
-
+<!-- WHALES PAGE -->
 <div id="whales" class="page">
-
 <div class="card">
-
-<h3>Whale Activity</h3>
-
-<p>Large BTC movement detected</p>
-
+<h3>BTC Whale Tracker</h3>
+<ul id="whaleFeed">
+<li>Tracking large transactions...</li>
+</ul>
+</div>
 </div>
 
+<!-- PRICING PAGE -->
+<div id="pricing" class="page">
+<div class="card">
+<h3>DealShield Pro</h3>
+<p>$5 / month</p>
+<ul>
+<li>Crypto Signals</li>
+<li>Gold Signals</li>
+<li>Telegram Alerts</li>
+<li>Market Terminal Access</li>
+</ul>
+</div>
 </div>
 
-
-<!-- SUBSCRIPTION -->
-
+<!-- SUBSCRIPTION PAGE -->
 <div id="subscribe" class="page">
-
 <div class="card">
-
-<h3>Subscription</h3>
-
-<a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526">PayPal Direct</a>
-
-<br><br>
-
-<a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4">PayPal Checkout</a>
-
+<h3>Subscribe Now</h3>
+<a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526">PayPal Direct</a><br><br>
+<a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4">PayPal Checkout</a><br><br>
+<p>Phantom Wallet Address:</p>
+<p>Cu7HrDpqS7JAgBXc5hJrzEwY4JQECdtmTZA6aZFXTHdK</p>
 </div>
-
 </div>
-
 
 <script>
-
+// PAGE NAVIGATION
 function showPage(page){
-
-let pages=document.querySelectorAll(".page")
-
-pages.forEach(p => p.style.display="none")
-
-document.getElementById(page).style.display="block"
-
+let pages=document.querySelectorAll(".page");
+pages.forEach(p => p.style.display="none");
+document.getElementById(page).style.display="block";
 }
+showPage("home");
 
-showPage("home")
+// LIVE PRICES
+async function loadPrices(){
+try{
+const crypto = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd");
+const cryptoData = await crypto.json();
+document.getElementById("btcPrice").innerText = "$"+cryptoData.bitcoin.usd;
+document.getElementById("ethMarket").innerText = "$"+cryptoData.ethereum.usd;
+document.getElementById("btcMarket").innerText = "$"+cryptoData.bitcoin.usd;
+document.getElementById("solMarket").innerText = "$"+cryptoData.solana.usd;
 
-async function loadBTC(){
+// Gold API
+const gold = await fetch("https://www.goldapi.io/api/XAU/USD",{headers:{"x-access-token":"goldapi-1lm9hgsmmshukdf-io"}});
+const goldData = await gold.json();
+document.getElementById("goldPrice").innerText = "$"+goldData.price;
+document.getElementById("goldMarket").innerText = "$"+goldData.price;
 
-const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
+// Forex
+const fx = await fetch("https://open.er-api.com/v6/latest/USD");
+const fxData = await fx.json();
+document.getElementById("jpyPrice").innerText = fxData.rates.JPY;
+document.getElementById("jpyMarket").innerText = fxData.rates.JPY;
 
-const data=await r.json()
-
-document.getElementById("btcPrice").innerText="$"+data.bitcoin.usd
-
+}catch(e){console.log("API error", e);}
 }
+loadPrices();
+setInterval(loadPrices,20000);
 
-loadBTC()
+// MARKET SENTIMENT
+function updateSentiment(){
+let states=["Bullish","Bearish","Neutral"];
+let random=states[Math.floor(Math.random()*states.length)];
+document.getElementById("sentiment").innerText=random;
+}
+updateSentiment();
+setInterval(updateSentiment,15000);
 
-setInterval(loadBTC,30000)
+// SIMULATED WHALE FEED
+function simulateWhale(){
+let amount = Math.floor(Math.random()*20)+5;
+let list = document.getElementById("whaleFeed");
+let item = document.createElement("li");
+item.innerText = "$"+amount+"M BTC moved";
+list.prepend(item);
+}
+setInterval(simulateWhale,25000);
+
+// SIGNAL FEED SIMULATION
+function simulateSignals(){
+let signals=["GOLD/USD Entry:5070.770 TP:5075.000 SL:5068.507","BTC/USD Entry:67120 TP:68000 SL:66500","USDJPY Entry:150.22 TP:151.00 SL:149.80"];
+let list = document.getElementById("signalFeed");
+let item = document.createElement("li");
+item.innerText = signals[Math.floor(Math.random()*signals.length)];
+list.prepend(item);
+}
+setInterval(simulateSignals,300000); // every 5 minutes
+
+// NEWS TICKER SIMULATION
+function updateNews(){
+let news=["BTC breaks resistance","Gold volatility rising","USDJPY approaching support"];
+document.getElementById("newsTicker").innerText=news[Math.floor(Math.random()*news.length)];
+}
+setInterval(updateNews,10000);
+updateNews();
 
 </script>
 
 </body>
-
-  </html>
+</html>
