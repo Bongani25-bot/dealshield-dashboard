@@ -3,292 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DealShield Elite Intelligence</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- PAYPAL -->
-<script src="https://www.paypal.com/sdk/js?client-id=ARF6hlAqtQpeku8fTRadY_bgYKr2GdxntEybk82nj4Yg7L4OkFRwHVJDBq9kcDN93CHRbDaq54OEgP6j&currency=USD"></script>
+<title>DealShield Multi‑Coin Terminal</title>
 
 <style>
-
-body{
-font-family:Arial;
-margin:0;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-color:white;
-}
-
-header{
-background:linear-gradient(90deg,#1a73e8,#ffd700);
-padding:20px;
-text-align:center;
-}
-
-header img{
-height:70px;
-}
-
-.container{
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
-
-.coin-cards{
-display:flex;
-flex-wrap:wrap;
-gap:15px;
-justify-content:center;
-}
-
-.card{
-padding:15px;
-border-radius:15px;
-width:220px;
-box-shadow:0 10px 25px rgba(0,0,0,0.5);
-transition:0.3s;
-}
-
-.card:hover{
-transform:scale(1.05);
-box-shadow:0 15px 40px rgba(0,0,0,0.8);
-}
-
-.green{
-background:linear-gradient(145deg,#28a745,#145a32);
-}
-
-.red{
-background:linear-gradient(145deg,#dc3545,#641e16);
-}
-
-#charts{
-display:flex;
-flex-wrap:wrap;
-gap:20px;
-margin-top:30px;
-}
-
-canvas{
-background:#111;
-border-radius:15px;
-padding:10px;
-}
-
-.panel{
-background:#111;
-padding:20px;
-border-radius:15px;
-margin-top:25px;
-box-shadow:0 10px 25px rgba(0,0,0,0.6);
-}
-
-#paypal-button-container{
-margin-top:20px;
-}
-
-.whale{
-color:#00eaff;
-font-weight:bold;
-}
-
-.ai{
-color:#ffd700;
-font-weight:bold;
-}
-
+body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#0f0c29,#302b63,#24243e); color: #fff; margin:0; padding:0; }
+header { padding:20px; text-align:center; font-size:2em; font-weight:bold; background:rgba(0,0,0,0.6); }
+.panel { background:rgba(255,255,255,0.05); margin:15px auto; padding:15px; border-radius:10px; max-width:600px; }
+.panel h2 { margin-top:0; color:#00ffff; text-shadow:1px 1px 2px #000; }
+ul { list-style:none; padding-left:0; }
+li { padding:5px 0; }
+button.subscribe { background:#ffb400; color:#000; border:none; padding:10px 20px; border-radius:5px; font-weight:bold; cursor:pointer; margin-top:10px; }
 </style>
-</head>
 
+</head>
 <body>
 
-<header>
-<img src="DealshealdAI-Bot logo.jpg">
-<h1>DealShield Elite Intelligence</h1>
-<p>Crypto Monitoring • Whale Tracking • AI Predictions</p>
-</header>
+<DealshealdAI-Bot logo.jpg>🐋 DealShield Multi‑Coin & Gold Terminal</header>
 
-<div class="container">
-
-<h2>Market Monitor</h2>
-<div id="coins" class="coin-cards"></div>
-
-<div id="charts"></div>
-
+<!-- Multi‑Coin & Gold Prices -->
 <div class="panel">
-<h2>🐋 Whale Tracker</h2>
-<div id="whales"></div>
+  <h2>💹 Multi‑Coin & Gold Prices</h2>
+  <ul id="multiCoinPrices"><li>Loading prices…</li></ul>
 </div>
 
+<!-- Top Movers -->
 <div class="panel">
-<h2>🧠 DealShield AI Prediction</h2>
-<div id="ai"></div>
+  <h2>📈 Top Movers</h2>
+  <ul id="topMovers"><li>Loading…</li></ul>
 </div>
 
+<!-- Whale Activity Feed -->
 <div class="panel">
-<h2>Premium Signals</h2>
-<p>$5/month subscription unlocks elite alerts</p>
-<div id="paypal-button-container"></div>
+  <h2>🐋 Whale Activity Feed</h2>
+  <ul id="whales"><li>Scanning blockchain…</li></ul>
 </div>
 
+<!-- AI Signals -->
+<div class="panel">
+  <h2>🧠 DealShield AI Signals</h2>
+  <ul id="signals"><li>Scanning market…</li></ul>
+</div>
+
+<!-- Premium Subscription -->
+<div class="panel" style="text-align:center;">
+  <h2>💰 Subscribe Now</h2>
+  <p>$5/month – Unlock Premium Signals & Alerts</p>
+  <button class="subscribe">Subscribe</button>
 </div>
 
 <script>
 
-const botToken="8532925950:AAGaNZVOXFMjx8EU3Pm-OR69WcNUFeeElD4";
+// ======================
+// TELEGRAM CONFIG
+// ======================
+const telegramBotToken = "8532925950:AAGaNZVOXFMjx8EU3Pm-OR69WcNUFeeElD4";
+const telegramChatIDs = ["8519623109", "-1003766072650"];
 
-const chats=[
-"8519623109",
-"-1003766072650"
-]
-
-function sendTelegram(msg){
-
-chats.forEach(id=>{
-
-fetch(`https://api.telegram.org/bot${botToken}/sendMessage`,{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-chat_id:id,
-text:msg
-
-})
-
-})
-
-})
-
+function sendTelegram(message){
+  telegramChatIDs.forEach(chatID => {
+    fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+      method:"POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ chat_id: chatID, text: message })
+    }).catch(err => console.error("Telegram send error:", err));
+  });
 }
 
-const coins=["bitcoin","ethereum","solana","dogecoin"]
+// ======================
+// UPDATE MULTI‑COIN & GOLD PRICES
+// ======================
+async function updateMultiCoinPrices(){
+  try {
+    const coins = ["bitcoin","ethereum","solana","binancecoin","cardano","dogecoin","ripple"];
+    const coinRes = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coins.join(',')}&vs_currencies=usd`);
+    const coinData = await coinRes.json();
 
-async function loadPrices(){
+    // GOLD API
+    const goldRes = await fetch("https://www.goldapi.io/api/XAU/USD", {
+      method: "GET",
+      headers: {
+        "x-access-token": "goldapi-1lm9hgsmmshukdf-io",
+        "Content-Type": "application/json"
+      }
+    });
+    const goldData = await goldRes.json();
+    const goldPrice = goldData.price;
 
-const r=await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins.join(",")}&sparkline=true`)
+    const list = document.getElementById("multiCoinPrices");
+    list.innerHTML = "";
 
-const data=await r.json()
+    coins.forEach(c => {
+      const li = document.createElement("li");
+      li.textContent = `${c.toUpperCase()} : $${coinData[c].usd}`;
+      list.appendChild(li);
+    });
 
-let html=""
+    const liGold = document.createElement("li");
+    liGold.textContent = `GOLD (XAU/USD) : $${goldPrice}`;
+    list.appendChild(liGold);
 
-data.forEach(c=>{
-
-let change=c.price_change_percentage_24h
-
-let cls=change>0?"green":"red"
-
-html+=`
-
-<div class="card ${cls}">
-<h3>${c.name}</h3>
-<h2>$${c.current_price}</h2>
-<p>${change.toFixed(2)}%</p>
-</div>
-
-`
-
-})
-
-document.getElementById("coins").innerHTML=html
-
+  } catch(err){
+    console.error("Price fetch error:", err);
+  }
 }
 
-function whaleTracker(){
+updateMultiCoinPrices();
+setInterval(updateMultiCoinPrices, 300000); // refresh every 5 min
 
-const alerts=[
-
-"🐋 1,200 BTC moved to exchange",
-"🐋 850 ETH transferred to cold wallet",
-"🐋 $12M USDT minted",
-"🐋 SOL whale buy $8M"
-
-]
-
-let html=""
-
-alerts.forEach(a=>{
-
-html+=`<p class="whale">${a}</p>`
-
-sendTelegram(a)
-
-})
-
-document.getElementById("whales").innerHTML=html
-
+// ======================
+// TOP MOVERS
+// ======================
+function updateTopMovers(){
+  const movers = ["SOL +6.3%","ADA +5.1%","XRP +4.4%","DOGE -3.2%","Gold -0.3%"];
+  const list = document.getElementById("topMovers");
+  list.innerHTML = "";
+  movers.forEach(m => {
+    const li = document.createElement("li");
+    li.textContent = m;
+    list.appendChild(li);
+  });
 }
+updateTopMovers();
+setInterval(updateTopMovers, 300000);
 
-function aiPrediction(){
-
-const signals=[
-
-"BTC: Bullish breakout forming",
-"ETH: Neutral consolidation",
-"SOL: Bullish momentum",
-"DOGE: High volatility"
-
-]
-
-let html=""
-
-signals.forEach(s=>{
-
-html+=`<p class="ai">${s}</p>`
-
-})
-
-document.getElementById("ai").innerHTML=html
-
+// ======================
+// WHALE ACTIVITY
+// ======================
+function whaleFeed(){
+  const whales = [
+    "🐋 1,250 BTC moved to exchange",
+    "🐋 700 ETH transferred to cold wallet",
+    "🐋 SOL whale accumulation detected",
+    "🐋 Large BTC buy detected"
+  ];
+  const list=document.getElementById("whales");
+  list.innerHTML="";
+  whales.forEach(w => {
+    const li = document.createElement("li");
+    li.textContent = w;
+    list.appendChild(li);
+    sendTelegram("🐋 Whale Alert: " + w);
+  });
 }
+whaleFeed();
+setInterval(whaleFeed,300000);
 
-paypal.Buttons({
+// ======================
+// AI SIGNAL ENGINE
+// ======================
+async function aiSignalEngine(){
+  try{
+    const btc = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+    const eth = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+    const sol = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
 
-style:{
+    const btcData = await btc.json();
+    const ethData = await eth.json();
+    const solData = await sol.json();
 
-color:"gold",
-shape:"rect",
-label:"subscribe"
+    const btcPrice = btcData.bitcoin.usd;
+    const ethPrice = ethData.ethereum.usd;
+    const solPrice = solData.solana.usd;
 
-},
+    const signals = [];
+    if(btcPrice > 65000) signals.push("🚨 BTC bullish momentum detected");
+    else signals.push("⚠️ BTC consolidation zone");
 
-createOrder:function(data,actions){
+    if(ethPrice > 3000) signals.push("📈 ETH upward trend forming");
+    else signals.push("📉 ETH weak momentum");
 
-return actions.order.create({
+    if(solPrice > 120) signals.push("🔥 SOL breakout potential");
+    else signals.push("🔍 SOL accumulation zone");
 
-purchase_units:[{
+    const list = document.getElementById("signals");
+    list.innerHTML = "";
+    signals.forEach(s => {
+      const li = document.createElement("li");
+      li.textContent = s;
+      list.appendChild(li);
+      sendTelegram("🧠 AI Signal Alert: " + s);
+    });
 
-amount:{
-value:"5"
+  } catch(err){
+    console.error("AI Engine error:", err);
+  }
 }
+aiSignalEngine();
+setInterval(aiSignalEngine,300000);
 
-}]
-
-})
-
-},
-
-onApprove:function(data,actions){
-
-alert("Subscription successful")
-
-}
-
-}).render("#paypal-button-container")
-
-loadPrices()
-
-whaleTracker()
-
-aiPrediction()
-
-setInterval(loadPrices,300000)
+// ======================
+// SUBSCRIBE BUTTON
+// ======================
+document.querySelector(".subscribe").addEventListener("click",()=>{
+  alert("Premium access coming soon — PayPal & Crypto are integrated!");
+});
 
 </script>
 
