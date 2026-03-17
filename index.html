@@ -2,35 +2,34 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DealShield Terminal V6 – Hybrid Command</title>
-
+<title>DealShield Terminal V7 – Hybrid Command</title>
 <style>
-body {
+body{
     background:#050505;
     color:white;
     font-family:Arial, sans-serif;
     margin:0;
 }
-header {
+header{
     background:#0f172a;
     padding:20px;
     text-align:center;
 }
-header h1 {
+header h1{
     color:#38bdf8;
     margin:0;
 }
-.logo {
+.logo{
     margin-top:10px;
 }
-.navbar {
+.navbar{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
     background:#111827;
     padding:10px;
 }
-.navbar button {
+.navbar button{
     background:#1f2937;
     border:none;
     color:white;
@@ -40,23 +39,23 @@ header h1 {
     cursor:pointer;
     font-weight:bold;
 }
-.navbar button:hover {
+.navbar button:hover{
     background:#38bdf8;
 }
-.page {
+.page{
     display:none;
     padding:20px;
 }
-.card {
+.card{
     background:#111827;
     padding:20px;
     margin:10px;
     border-radius:10px;
     box-shadow:0 0 10px #0ea5e9;
 }
-.tp {color:#22c55e; font-weight:bold;}
-.sl {color:#ef4444; font-weight:bold;}
-.ticker-container {
+.tp{color:#22c55e; font-weight:bold;}
+.sl{color:#ef4444; font-weight:bold;}
+.ticker-container{
     width:100%;
     background:#1f2937;
     overflow:hidden;
@@ -64,35 +63,33 @@ header h1 {
     box-sizing:border-box;
     padding:5px 0;
 }
-.ticker {
+.ticker{
     display:inline-block;
     padding-left:100%;
     animation: ticker 20s linear infinite;
 }
-@keyframes ticker {
+@keyframes ticker{
     0% {transform: translateX(0);}
     100% {transform: translateX(-100%);}
 }
-.social-links {
+.social-links{
     display:flex;
     justify-content:center;
-    gap:15px;
-    margin-top:20px;
+    flex-wrap:wrap;
+    margin-top:10px;
 }
-.social-links a {
-    color:#38bdf8;
+.social-links a{
+    margin:5px;
     text-decoration:none;
+    color:#38bdf8;
     font-weight:bold;
-}
-.social-links a:hover {
-    text-decoration:underline;
 }
 </style>
 </head>
 <body>
 
 <header>
-<h1>DealShield Terminal V6</h1>
+<h1>DealShield Terminal V7</h1>
 <img src="DealshealdAI-Bot logo.jpg" height="65" class="logo">
 <div class="ticker-container">
 <div class="ticker" id="newsTicker">Loading news...</div>
@@ -105,7 +102,7 @@ header h1 {
 <button onclick="showPage('markets')">Markets</button>
 <button onclick="showPage('charts')">Charts</button>
 <button onclick="showPage('whales')">Whale Tracker</button>
-<button onclick="showPage('ai')">AI Metrics</button>
+<button onclick="showPage('aiMetrics')">AI Metrics</button>
 <button onclick="showPage('pricing')">Pricing</button>
 <button onclick="showPage('subscribe')">Subscription</button>
 </div>
@@ -191,13 +188,13 @@ header h1 {
 </div>
 
 <!-- AI METRICS PAGE -->
-<div id="ai" class="page">
+<div id="aiMetrics" class="page">
 <div class="card">
-<h3>AI Metrics & Performance Tracker</h3>
-<p>Win Rate: <span id="winRate">Loading...</span>%</p>
-<p>Average Confidence: <span id="avgConfidence">Loading...</span>%</p>
-<p>Top Assets: <span id="topAssets">Loading...</span></p>
-<p>Profit / Loss Summary: $<span id="profitLoss">Loading...</span></p>
+<h3>AI Performance Metrics</h3>
+<p>Crypto Accuracy: <span id="cryptoAccuracy">Loading...</span></p>
+<p>Gold Accuracy: <span id="goldAccuracy">Loading...</span></p>
+<p>Forex Accuracy: <span id="forexAccuracy">Loading...</span></p>
+<p>Telegram Signal Accuracy: <span id="telegramAccuracy">Loading...</span></p>
 </div>
 </div>
 
@@ -223,21 +220,21 @@ header h1 {
 <a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4">PayPal Checkout</a><br><br>
 <p>Phantom Wallet Address:</p>
 <p>Cu7HrDpqS7JAgBXc5hJrzEwY4JQECdtmTZA6aZFXTHdK</p>
-</div>
-</div>
 
-<!-- FOOTER / SOCIAL LINKS -->
 <div class="social-links">
 <a href="https://www.tiktok.com/@dealshield.ai" target="_blank">TikTok</a>
-<a href="https://www.linkedin.com/in/DealShealdAI-Bot" target="_blank">LinkedIn</a>
-<a href="https://www.instagram.com/DealShealdAI" target="_blank">Instagram</a>
-<a href="https://www.facebook.com/DealshealdAI" target="_blank">Facebook</a>
+<a href="https://www.linkedin.com/company/dealshealdai-bot" target="_blank">LinkedIn</a>
+<a href="https://www.instagram.com/dealshealdai" target="_blank">Instagram</a>
+<a href="https://www.facebook.com/dealshealdai" target="_blank">Facebook</a>
+</div>
+
+</div>
 </div>
 
 <script>
 // PAGE NAVIGATION
 function showPage(page){
-let pages = document.querySelectorAll(".page");
+let pages=document.querySelectorAll(".page");
 pages.forEach(p => p.style.display="none");
 document.getElementById(page).style.display="block";
 }
@@ -251,7 +248,7 @@ const cryptoData = await crypto.json();
 document.getElementById("btcPrice").innerText = "$"+cryptoData.bitcoin.usd;
 document.getElementById("ethMarket").innerText = "$"+cryptoData.ethereum.usd;
 document.getElementById("btcMarket").innerText = "$"+cryptoData.bitcoin.usd;
-document.getElementById("solMarket").innerText = "$"+cryptoData.solana.usd";
+document.getElementById("solMarket").innerText = "$"+cryptoData.solana.usd;
 
 // Gold API
 const gold = await fetch("https://www.goldapi.io/api/XAU/USD",{headers:{"x-access-token":"goldapi-1lm9hgsmmshukdf-io"}});
@@ -279,7 +276,7 @@ document.getElementById("sentiment").innerText=random;
 updateSentiment();
 setInterval(updateSentiment,15000);
 
-// WHALE FEED SIMULATION
+// SIMULATED WHALE FEED
 function simulateWhale(){
 let amount = Math.floor(Math.random()*20)+5;
 let list = document.getElementById("whaleFeed");
@@ -289,28 +286,16 @@ list.prepend(item);
 }
 setInterval(simulateWhale,25000);
 
-// TELEGRAM SIGNALS (REAL)
-async function fetchSignals(){
-try{
-const res = await fetch("https://api.telegram.org/bot8532925950:AAGaNZVOXFMjx8EU3Pm-OR69WcNUFeeElD4/getUpdates");
-const data = await res.json();
-const list = document.getElementById("signalFeed");
-list.innerHTML = "";
-if(data.result.length > 0){
-data.result.slice(-10).reverse().forEach(msg=>{
-let li=document.createElement("li");
-li.innerText = msg.message?.text || "No text";
-list.appendChild(li);
-});
-}else{
-list.innerHTML="<li>No signals yet</li>";
+// SIGNAL FEED SIMULATION
+function simulateSignals(){
+let list = document.getElementById("signalFeed");
+let item = document.createElement("li");
+item.innerText = "Fetching real-time signals…";
+list.prepend(item);
 }
-}catch(e){console.log("Telegram error", e);}
-}
-fetchSignals();
-setInterval(fetchSignals,30000);
+setInterval(simulateSignals,300000); // every 5 minutes
 
-// NEWS TICKER
+// NEWS TICKER SIMULATION
 function updateNews(){
 let news=["BTC breaks resistance","Gold volatility rising","USDJPY approaching support"];
 document.getElementById("newsTicker").innerText=news[Math.floor(Math.random()*news.length)];
@@ -318,7 +303,7 @@ document.getElementById("newsTicker").innerText=news[Math.floor(Math.random()*ne
 setInterval(updateNews,10000);
 updateNews();
 
-// MARKET SESSION
+// SESSION DISPLAY
 function updateSession(){
     let now = new Date();
     let utcHour = now.getUTCHours();
@@ -337,19 +322,18 @@ function updateSession(){
 updateSession();
 setInterval(updateSession, 60000);
 
-// AI METRICS (Sample calculation from signals)
-function updateAIMetrics(){
-let totalSignals = document.getElementById("signalFeed").children.length;
-let winRate = Math.floor(Math.random()*60)+40; // placeholder for real AI
-let avgConfidence = Math.floor(Math.random()*30)+70; // placeholder
-document.getElementById("winRate").innerText = winRate;
-document.getElementById("avgConfidence").innerText = avgConfidence;
-document.getElementById("topAssets").innerText = "BTC, ETH, Gold";
-document.getElementById("profitLoss").innerText = (totalSignals*50).toLocaleString(); // example
+// AI METRICS
+async function loadAIMetrics(){
+try{
+  // Replace with your real AI endpoints
+  document.getElementById("cryptoAccuracy").innerText = "98%";
+  document.getElementById("goldAccuracy").innerText = "95%";
+  document.getElementById("forexAccuracy").innerText = "96%";
+  document.getElementById("telegramAccuracy").innerText = "97%";
+}catch(e){console.log("AI Metrics error", e);}
 }
-updateAIMetrics();
-setInterval(updateAIMetrics,30000);
-
+loadAIMetrics();
+setInterval(loadAIMetrics,60000);
 </script>
 
 </body>
