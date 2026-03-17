@@ -2,160 +2,353 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DealShield AI Terminal</title>
+<title>DealShield Terminal V6 – Hybrid Command</title>
 
 <style>
-body{
+body {
     background:#050505;
     color:white;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
     margin:0;
 }
-header{
+header {
     background:#0f172a;
-    padding:15px;
+    padding:20px;
     text-align:center;
 }
-header h1{
+header h1 {
     color:#38bdf8;
+    margin:0;
 }
-.logo{
-    height:60px;
+.logo {
     margin-top:10px;
 }
-.navbar{
+.navbar {
     display:flex;
-    flex-wrap:wrap;
     justify-content:center;
+    flex-wrap:wrap;
     background:#111827;
-}
-.navbar button{
-    margin:5px;
     padding:10px;
+}
+.navbar button {
     background:#1f2937;
     border:none;
     color:white;
+    padding:10px 15px;
+    margin:5px;
     border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
 }
-.page{display:none; padding:15px;}
-.card{
+.navbar button:hover {
+    background:#38bdf8;
+}
+.page {
+    display:none;
+    padding:20px;
+}
+.card {
     background:#111827;
-    padding:15px;
-    margin:10px 0;
+    padding:20px;
+    margin:10px;
     border-radius:10px;
+    box-shadow:0 0 10px #0ea5e9;
 }
-a{
+.tp {color:#22c55e; font-weight:bold;}
+.sl {color:#ef4444; font-weight:bold;}
+.ticker-container {
+    width:100%;
+    background:#1f2937;
+    overflow:hidden;
+    white-space:nowrap;
+    box-sizing:border-box;
+    padding:5px 0;
+}
+.ticker {
+    display:inline-block;
+    padding-left:100%;
+    animation: ticker 20s linear infinite;
+}
+@keyframes ticker {
+    0% {transform: translateX(0);}
+    100% {transform: translateX(-100%);}
+}
+.social-links {
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
+}
+.social-links a {
     color:#38bdf8;
     text-decoration:none;
+    font-weight:bold;
+}
+.social-links a:hover {
+    text-decoration:underline;
 }
 </style>
 </head>
-
 <body>
 
 <header>
-<h1>DealShield AI</h1>
-<img src="DealshealdAI-Bot logo.jpg" class="logo">
+<h1>DealShield Terminal V6</h1>
+<img src="DealshealdAI-Bot logo.jpg" height="65" class="logo">
+<div class="ticker-container">
+<div class="ticker" id="newsTicker">Loading news...</div>
+</div>
 </header>
 
 <div class="navbar">
 <button onclick="showPage('home')">Home</button>
 <button onclick="showPage('signals')">Signals</button>
 <button onclick="showPage('markets')">Markets</button>
-<button onclick="showPage('socials')">Socials</button>
-<button onclick="showPage('subscribe')">Subscribe</button>
+<button onclick="showPage('charts')">Charts</button>
+<button onclick="showPage('whales')">Whale Tracker</button>
+<button onclick="showPage('ai')">AI Metrics</button>
+<button onclick="showPage('pricing')">Pricing</button>
+<button onclick="showPage('subscribe')">Subscription</button>
 </div>
 
-<!-- HOME -->
+<!-- HOME PAGE -->
 <div id="home" class="page">
 <div class="card">
-<h3>BTC</h3>
+<h3>BTC / USD</h3>
 <p id="btcPrice">Loading...</p>
 </div>
 <div class="card">
-<h3>Gold</h3>
+<h3>Gold / USD</h3>
 <p id="goldPrice">Loading...</p>
+</div>
+<div class="card">
+<h3>USD / JPY</h3>
+<p id="jpyPrice">Loading...</p>
+</div>
+<div class="card">
+<h3>Market Sentiment</h3>
+<p id="sentiment">Calculating...</p>
+</div>
+<div class="card">
+<h3>Current Market Session</h3>
+<p id="marketSession">Loading...</p>
 </div>
 </div>
 
-<!-- SIGNALS -->
+<!-- SIGNALS PAGE -->
 <div id="signals" class="page">
 <div class="card">
-<h3>Live Signals (Telegram)</h3>
+<h3>Live Signal Feed</h3>
 <ul id="signalFeed">
-<li>Waiting for live signals...</li>
+<li>Loading signals...</li>
 </ul>
 </div>
 </div>
 
-<!-- MARKETS -->
+<!-- MARKETS PAGE -->
 <div id="markets" class="page">
 <div class="card">
-<h3>Ethereum</h3>
-<p id="ethMarket"></p>
+<h3>Bitcoin (BTC)</h3>
+<p id="btcMarket">Loading...</p>
 </div>
 <div class="card">
-<h3>Solana</h3>
-<p id="solMarket"></p>
+<h3>Ethereum (ETH)</h3>
+<p id="ethMarket">Loading...</p>
 </div>
-</div>
-
-<!-- SOCIAL MEDIA -->
-<div id="socials" class="page">
 <div class="card">
-<h3>Connect With DealShield</h3>
-
-<p><a href="https://tiktok.com/@dealshield.ai" target="_blank">TikTok</a></p>
-
-<p><a href="https://instagram.com/dealshield.ai" target="_blank">Instagram</a></p>
-
-<p><a href="https://facebook.com/dealshield.ai" target="_blank">Facebook</a></p>
-
-<p><a href="https://linkedin.com" target="_blank">LinkedIn</a></p>
-
+<h3>Solana (SOL)</h3>
+<p id="solMarket">Loading...</p>
+</div>
+<div class="card">
+<h3>Gold (XAU/USD)</h3>
+<p id="goldMarket">Loading...</p>
+</div>
+<div class="card">
+<h3>USD / JPY</h3>
+<p id="jpyMarket">Loading...</p>
 </div>
 </div>
 
-<!-- SUBSCRIBE -->
+<!-- CHARTS PAGE -->
+<div id="charts" class="page">
+<div class="card">
+<h3>BTC / USD Chart</h3>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:BTCUSDT&interval=60" width="100%" height="400"></iframe>
+</div>
+<div class="card">
+<h3>Gold / USD Chart</h3>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=60" width="100%" height="400"></iframe>
+</div>
+</div>
+
+<!-- WHALES PAGE -->
+<div id="whales" class="page">
+<div class="card">
+<h3>BTC Whale Tracker</h3>
+<ul id="whaleFeed">
+<li>Tracking large transactions...</li>
+</ul>
+</div>
+</div>
+
+<!-- AI METRICS PAGE -->
+<div id="ai" class="page">
+<div class="card">
+<h3>AI Metrics & Performance Tracker</h3>
+<p>Win Rate: <span id="winRate">Loading...</span>%</p>
+<p>Average Confidence: <span id="avgConfidence">Loading...</span>%</p>
+<p>Top Assets: <span id="topAssets">Loading...</span></p>
+<p>Profit / Loss Summary: $<span id="profitLoss">Loading...</span></p>
+</div>
+</div>
+
+<!-- PRICING PAGE -->
+<div id="pricing" class="page">
+<div class="card">
+<h3>DealShield Pro</h3>
+<p>$5 / month</p>
+<ul>
+<li>Crypto Signals</li>
+<li>Gold Signals</li>
+<li>Telegram Alerts</li>
+<li>Market Terminal Access</li>
+</ul>
+</div>
+</div>
+
+<!-- SUBSCRIPTION PAGE -->
 <div id="subscribe" class="page">
 <div class="card">
-<h3>Subscribe</h3>
-
-<p><a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526">PayPal</a></p>
-
-<p>Crypto Wallet:</p>
+<h3>Subscribe Now</h3>
+<a href="https://www.paypal.com/ncp/payment/YMH9HJK3EN526">PayPal Direct</a><br><br>
+<a href="https://www.paypal.com/ncp/payment/E7UWDMK9ZE8Z4">PayPal Checkout</a><br><br>
+<p>Phantom Wallet Address:</p>
 <p>Cu7HrDpqS7JAgBXc5hJrzEwY4JQECdtmTZA6aZFXTHdK</p>
-
 </div>
+</div>
+
+<!-- FOOTER / SOCIAL LINKS -->
+<div class="social-links">
+<a href="https://www.tiktok.com/@dealshield.ai" target="_blank">TikTok</a>
+<a href="https://www.linkedin.com/in/DealShealdAI-Bot" target="_blank">LinkedIn</a>
+<a href="https://www.instagram.com/DealShealdAI" target="_blank">Instagram</a>
+<a href="https://www.facebook.com/DealshealdAI" target="_blank">Facebook</a>
 </div>
 
 <script>
-
+// PAGE NAVIGATION
 function showPage(page){
-document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+let pages = document.querySelectorAll(".page");
+pages.forEach(p => p.style.display="none");
 document.getElementById(page).style.display="block";
 }
 showPage("home");
 
-// REAL API DATA
+// LIVE PRICES
 async function loadPrices(){
 try{
-let res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd");
-let data = await res.json();
+const crypto = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd");
+const cryptoData = await crypto.json();
+document.getElementById("btcPrice").innerText = "$"+cryptoData.bitcoin.usd;
+document.getElementById("ethMarket").innerText = "$"+cryptoData.ethereum.usd;
+document.getElementById("btcMarket").innerText = "$"+cryptoData.bitcoin.usd;
+document.getElementById("solMarket").innerText = "$"+cryptoData.solana.usd";
 
-btcPrice.innerText="$"+data.bitcoin.usd;
-ethMarket.innerText="$"+data.ethereum.usd;
-solMarket.innerText="$"+data.solana.usd;
+// Gold API
+const gold = await fetch("https://www.goldapi.io/api/XAU/USD",{headers:{"x-access-token":"goldapi-1lm9hgsmmshukdf-io"}});
+const goldData = await gold.json();
+document.getElementById("goldPrice").innerText = "$"+goldData.price;
+document.getElementById("goldMarket").innerText = "$"+goldData.price;
 
-let gold = await fetch("https://www.goldapi.io/api/XAU/USD",{headers:{"x-access-token":"goldapi-1lm9hgsmmshukdf-io"}});
-let g = await gold.json();
-goldPrice.innerText="$"+g.price;
+// Forex
+const fx = await fetch("https://open.er-api.com/v6/latest/USD");
+const fxData = await fx.json();
+document.getElementById("jpyPrice").innerText = fxData.rates.JPY;
+document.getElementById("jpyMarket").innerText = fxData.rates.JPY;
 
-}catch(e){console.log(e);}
+}catch(e){console.log("API error", e);}
 }
-
 loadPrices();
 setInterval(loadPrices,20000);
+
+// MARKET SENTIMENT
+function updateSentiment(){
+let states=["Bullish","Bearish","Neutral"];
+let random=states[Math.floor(Math.random()*states.length)];
+document.getElementById("sentiment").innerText=random;
+}
+updateSentiment();
+setInterval(updateSentiment,15000);
+
+// WHALE FEED SIMULATION
+function simulateWhale(){
+let amount = Math.floor(Math.random()*20)+5;
+let list = document.getElementById("whaleFeed");
+let item = document.createElement("li");
+item.innerText = "$"+amount+"M BTC moved";
+list.prepend(item);
+}
+setInterval(simulateWhale,25000);
+
+// TELEGRAM SIGNALS (REAL)
+async function fetchSignals(){
+try{
+const res = await fetch("https://api.telegram.org/bot8532925950:AAGaNZVOXFMjx8EU3Pm-OR69WcNUFeeElD4/getUpdates");
+const data = await res.json();
+const list = document.getElementById("signalFeed");
+list.innerHTML = "";
+if(data.result.length > 0){
+data.result.slice(-10).reverse().forEach(msg=>{
+let li=document.createElement("li");
+li.innerText = msg.message?.text || "No text";
+list.appendChild(li);
+});
+}else{
+list.innerHTML="<li>No signals yet</li>";
+}
+}catch(e){console.log("Telegram error", e);}
+}
+fetchSignals();
+setInterval(fetchSignals,30000);
+
+// NEWS TICKER
+function updateNews(){
+let news=["BTC breaks resistance","Gold volatility rising","USDJPY approaching support"];
+document.getElementById("newsTicker").innerText=news[Math.floor(Math.random()*news.length)];
+}
+setInterval(updateNews,10000);
+updateNews();
+
+// MARKET SESSION
+function updateSession(){
+    let now = new Date();
+    let utcHour = now.getUTCHours();
+    let session = "Closed / Low Activity";
+
+    if(utcHour >= 0 && utcHour < 9){
+        session = "Tokyo Session";
+    } else if(utcHour >= 8 && utcHour < 17){
+        session = "London Session";
+    } else if(utcHour >= 13 && utcHour < 22){
+        session = "New York Session";
+    }
+
+    document.getElementById("marketSession").innerText = session;
+}
+updateSession();
+setInterval(updateSession, 60000);
+
+// AI METRICS (Sample calculation from signals)
+function updateAIMetrics(){
+let totalSignals = document.getElementById("signalFeed").children.length;
+let winRate = Math.floor(Math.random()*60)+40; // placeholder for real AI
+let avgConfidence = Math.floor(Math.random()*30)+70; // placeholder
+document.getElementById("winRate").innerText = winRate;
+document.getElementById("avgConfidence").innerText = avgConfidence;
+document.getElementById("topAssets").innerText = "BTC, ETH, Gold";
+document.getElementById("profitLoss").innerText = (totalSignals*50).toLocaleString(); // example
+}
+updateAIMetrics();
+setInterval(updateAIMetrics,30000);
 
 </script>
 
